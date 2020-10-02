@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "github.com/kulycloud/protocol/route-processor;route_processor";
+
+import "common.proto";
+
+service RouteProcessor {
+  rpc ProcessRoute(RouteProcessorRequest) returns (RouteProcessorResponse);
+  rpc Ping(Empty) returns (Empty);
+}
+
+enum RouteProcessorStatus {
+  OK = 0;
+  ERROR = 1;
+}
+
+message RouteProcessorRequest {
+  string user = 1;
+  string data = 2;
+}
+
+message RouteProcessorResponse {
+  RouteProcessorStatus status = 1;
+}

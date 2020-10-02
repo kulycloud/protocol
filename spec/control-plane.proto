@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "github.com/kulycloud/protocol/control-plane;control_plane";
+
+import "common.proto";
+
+service ControlPlane {
+  rpc RegisterComponent(RegisterComponentRequest) returns (RegisterComponentResult) {}
+}
+
+message RegisterComponentResult {
+
+}
+
+message RegisterComponentRequest {
+  string type = 1;
+  Endpoint endpoint = 2;
+}
