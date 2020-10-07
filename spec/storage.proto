@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+option go_package = "github.com/kulycloud/protocol/storage;storage";
+
+import "common.proto";
+
+service Storage {
+  rpc Ping(Empty) returns (Empty);
+  rpc SetRoute(SetRouteRequest) returns (SetRouteResponse);
+  rpc GetRoute(GetRouteRequest) returns (GetRouteResponse);
+  rpc GetRouteStep(GetRouteStepRequest) returns (GetRouteStepResponse);
+}
+
+message NamespacedName {
+  string namespace = 1;
+  string name = 2;
+}
+
+message SetRouteRequest {
+  oneof id {
+    NamespacedName namespacedName = 1;
+    string uid = 2;
+  }
+  Route data = 3;
+}
+
+message SetRouteResponse {
+  string uid = 1;
+}
+
+message GetRouteRequest {
+  oneof id {
+    NamespacedName namespacedName = 1;
+    string uid = 2;
+  };
+}
+
+message GetRouteResponse {
+  RouteWithId route = 1;
+}
+
+message GetRouteStepRequest {
+  oneof id {
+    NamespacedName namespacedName = 1;
+    string uid = 2;
+  };
+  uint32 step_id = 3;
+}
+
+message GetRouteStepResponse {
+  string uid = 1;
+  uint32 step_id = 2;
+  RouteStep step = 3;
+}
+
+message RouteWithId {
+  string uid = 1;
+  Route route = 2;
+}
+
+message Route {
+  string host = 2;
+  repeated RouteStep steps = 3;
+}
+
+message RouteStep {
+  oneof target {
+    string service = 1;
+    string app = 2;
+  }
+  string config = 3;
+}
