@@ -2,10 +2,7 @@ syntax = "proto3";
 
 option go_package = "github.com/kulycloud/protocol/storage;storage";
 
-import "common.proto";
-
 service Storage {
-  rpc Ping(Empty) returns (Empty);
   rpc SetRoute(SetRouteRequest) returns (SetRouteResponse);
   rpc GetRoute(GetRouteRequest) returns (GetRouteResponse);
   rpc GetRouteStep(GetRouteStepRequest) returns (GetRouteStepResponse);

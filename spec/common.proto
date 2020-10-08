@@ -8,3 +8,7 @@ message Endpoint {
 }
 
 message Empty { }
+
+service Component {
+  rpc Ping(Empty) returns (Empty);
+}
