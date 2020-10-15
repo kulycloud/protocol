@@ -9,6 +9,12 @@ message Endpoint {
 
 message Empty { }
 
+message EndpointList {
+  repeated Endpoint endpoints = 1;
+}
+
 service Component {
   rpc Ping(Empty) returns (Empty);
+  rpc RegisterStorageEndpoints(EndpointList) returns (Empty);
 }
+
