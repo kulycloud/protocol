@@ -2,10 +2,14 @@ syntax = "proto3";
 
 option go_package = "github.com/kulycloud/protocol/storage;storage";
 
+import "common.proto";
+
 service Storage {
   rpc SetRoute(SetRouteRequest) returns (SetRouteResponse);
   rpc GetRoute(GetRouteRequest) returns (GetRouteResponse);
   rpc GetRouteStep(GetRouteStepRequest) returns (GetRouteStepResponse);
+  rpc GetRouteStart(GetRouteStartRequest) returns (GetRouteStartResponse);
+  rpc GetRoutesInNamespace(GetRoutesInNamespaceRequest) returns (GetRoutesInNamespaceResponse);
 }
 
 message NamespacedName {
@@ -14,10 +18,7 @@ message NamespacedName {
 }
 
 message SetRouteRequest {
-  oneof id {
-    NamespacedName namespacedName = 1;
-    string uid = 2;
-  }
+  NamespacedName namespacedName = 1;
   Route data = 3;
 }
 
@@ -48,6 +49,24 @@ message GetRouteStepResponse {
   RouteStep step = 3;
 }
 
+message GetRouteStartRequest {
+  string host = 1;
+}
+
+message GetRouteStartResponse {
+  RouteStep step = 1;
+  string uid = 2;
+  repeated Endpoint endpoints = 3;
+}
+
+message GetRoutesInNamespaceRequest {
+  string namespace = 1;
+}
+
+message GetRoutesInNamespaceResponse {
+  repeated string routes = 1;
+}
+
 message RouteWithId {
   string uid = 1;
   Route route = 2;
@@ -59,9 +78,6 @@ message Route {
 }
 
 message RouteStep {
-  oneof target {
-    string service = 1;
-    string app = 2;
-  }
-  string config = 3;
+  string service = 1;
+  string config = 2;
 }
