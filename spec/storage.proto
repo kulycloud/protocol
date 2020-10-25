@@ -5,17 +5,27 @@ option go_package = "github.com/kulycloud/protocol/storage;storage";
 import "common.proto";
 
 service Storage {
+  // Routes
   rpc SetRoute(SetRouteRequest) returns (SetRouteResponse);
   rpc GetRoute(GetRouteRequest) returns (GetRouteResponse);
   rpc GetRouteStep(GetRouteStepRequest) returns (GetRouteStepResponse);
   rpc GetRouteStart(GetRouteStartRequest) returns (GetRouteStartResponse);
   rpc GetRoutesInNamespace(GetRoutesInNamespaceRequest) returns (GetRoutesInNamespaceResponse);
+
+  // Services
+  rpc SetService(SetServiceRequest) returns (Empty);
+  rpc GetService(GetServiceRequest) returns (GetServiceResponse);
+  rpc GetServicesInNamespace(GetServicesInNamespaceRequest) returns (GetServicesInNamespaceResponse);
 }
 
 message NamespacedName {
   string namespace = 1;
   string name = 2;
 }
+
+// --------------------------------
+// ROUTES
+// --------------------------------
 
 message SetRouteRequest {
   NamespacedName namespacedName = 1;
@@ -78,6 +88,40 @@ message Route {
 }
 
 message RouteStep {
-  string service = 1;
+  NamespacedName service = 1;
   string config = 2;
 }
+
+// --------------------------------
+// SERVICES
+// --------------------------------
+
+message SetServiceRequest {
+  NamespacedName namespacedName = 1;
+  Service service = 2;
+}
+
+message GetServiceRequest {
+  NamespacedName namespacedName = 1;
+}
+
+message GetServiceResponse {
+  Service service = 1;
+}
+
+message GetServicesInNamespaceRequest {
+  string namespace = 1;
+}
+
+message GetServicesInNamespaceResponse {
+  repeated string names = 1;
+}
+
+message Service {
+  string image = 1;
+  string pullSecrets = 2;
+  uint32 replicas = 3;
+  map<string, string> environment = 4;
+  repeated string arguments = 5;
+}
+

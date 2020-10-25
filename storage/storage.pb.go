@@ -768,8 +768,8 @@ type RouteStep struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Service string `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
-	Config  string `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
+	Service *NamespacedName `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
+	Config  string          `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
 }
 
 func (x *RouteStep) Reset() {
@@ -804,11 +804,11 @@ func (*RouteStep) Descriptor() ([]byte, []int) {
 	return file_storage_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *RouteStep) GetService() string {
+func (x *RouteStep) GetService() *NamespacedName {
 	if x != nil {
 		return x.Service
 	}
-	return ""
+	return nil
 }
 
 func (x *RouteStep) GetConfig() string {
@@ -816,6 +816,328 @@ func (x *RouteStep) GetConfig() string {
 		return x.Config
 	}
 	return ""
+}
+
+type SetServiceRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	NamespacedName *NamespacedName `protobuf:"bytes,1,opt,name=namespacedName,proto3" json:"namespacedName,omitempty"`
+	Service        *Service        `protobuf:"bytes,2,opt,name=service,proto3" json:"service,omitempty"`
+}
+
+func (x *SetServiceRequest) Reset() {
+	*x = SetServiceRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_storage_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SetServiceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetServiceRequest) ProtoMessage() {}
+
+func (x *SetServiceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_storage_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetServiceRequest.ProtoReflect.Descriptor instead.
+func (*SetServiceRequest) Descriptor() ([]byte, []int) {
+	return file_storage_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *SetServiceRequest) GetNamespacedName() *NamespacedName {
+	if x != nil {
+		return x.NamespacedName
+	}
+	return nil
+}
+
+func (x *SetServiceRequest) GetService() *Service {
+	if x != nil {
+		return x.Service
+	}
+	return nil
+}
+
+type GetServiceRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	NamespacedName *NamespacedName `protobuf:"bytes,1,opt,name=namespacedName,proto3" json:"namespacedName,omitempty"`
+}
+
+func (x *GetServiceRequest) Reset() {
+	*x = GetServiceRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_storage_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetServiceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetServiceRequest) ProtoMessage() {}
+
+func (x *GetServiceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_storage_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetServiceRequest.ProtoReflect.Descriptor instead.
+func (*GetServiceRequest) Descriptor() ([]byte, []int) {
+	return file_storage_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *GetServiceRequest) GetNamespacedName() *NamespacedName {
+	if x != nil {
+		return x.NamespacedName
+	}
+	return nil
+}
+
+type GetServiceResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Service *Service `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
+}
+
+func (x *GetServiceResponse) Reset() {
+	*x = GetServiceResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_storage_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetServiceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetServiceResponse) ProtoMessage() {}
+
+func (x *GetServiceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_storage_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetServiceResponse.ProtoReflect.Descriptor instead.
+func (*GetServiceResponse) Descriptor() ([]byte, []int) {
+	return file_storage_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *GetServiceResponse) GetService() *Service {
+	if x != nil {
+		return x.Service
+	}
+	return nil
+}
+
+type GetServicesInNamespaceRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Namespace string `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
+}
+
+func (x *GetServicesInNamespaceRequest) Reset() {
+	*x = GetServicesInNamespaceRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_storage_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetServicesInNamespaceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetServicesInNamespaceRequest) ProtoMessage() {}
+
+func (x *GetServicesInNamespaceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_storage_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetServicesInNamespaceRequest.ProtoReflect.Descriptor instead.
+func (*GetServicesInNamespaceRequest) Descriptor() ([]byte, []int) {
+	return file_storage_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *GetServicesInNamespaceRequest) GetNamespace() string {
+	if x != nil {
+		return x.Namespace
+	}
+	return ""
+}
+
+type GetServicesInNamespaceResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Names []string `protobuf:"bytes,1,rep,name=names,proto3" json:"names,omitempty"`
+}
+
+func (x *GetServicesInNamespaceResponse) Reset() {
+	*x = GetServicesInNamespaceResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_storage_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetServicesInNamespaceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetServicesInNamespaceResponse) ProtoMessage() {}
+
+func (x *GetServicesInNamespaceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_storage_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetServicesInNamespaceResponse.ProtoReflect.Descriptor instead.
+func (*GetServicesInNamespaceResponse) Descriptor() ([]byte, []int) {
+	return file_storage_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *GetServicesInNamespaceResponse) GetNames() []string {
+	if x != nil {
+		return x.Names
+	}
+	return nil
+}
+
+type Service struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Image       string            `protobuf:"bytes,1,opt,name=image,proto3" json:"image,omitempty"`
+	PullSecrets string            `protobuf:"bytes,2,opt,name=pullSecrets,proto3" json:"pullSecrets,omitempty"`
+	Replicas    uint32            `protobuf:"varint,3,opt,name=replicas,proto3" json:"replicas,omitempty"`
+	Environment map[string]string `protobuf:"bytes,4,rep,name=environment,proto3" json:"environment,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Arguments   []string          `protobuf:"bytes,5,rep,name=arguments,proto3" json:"arguments,omitempty"`
+}
+
+func (x *Service) Reset() {
+	*x = Service{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_storage_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Service) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Service) ProtoMessage() {}
+
+func (x *Service) ProtoReflect() protoreflect.Message {
+	mi := &file_storage_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Service.ProtoReflect.Descriptor instead.
+func (*Service) Descriptor() ([]byte, []int) {
+	return file_storage_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *Service) GetImage() string {
+	if x != nil {
+		return x.Image
+	}
+	return ""
+}
+
+func (x *Service) GetPullSecrets() string {
+	if x != nil {
+		return x.PullSecrets
+	}
+	return ""
+}
+
+func (x *Service) GetReplicas() uint32 {
+	if x != nil {
+		return x.Replicas
+	}
+	return 0
+}
+
+func (x *Service) GetEnvironment() map[string]string {
+	if x != nil {
+		return x.Environment
+	}
+	return nil
+}
+
+func (x *Service) GetArguments() []string {
+	if x != nil {
+		return x.Arguments
+	}
+	return nil
 }
 
 var File_storage_proto protoreflect.FileDescriptor
@@ -883,34 +1205,86 @@ var file_storage_proto_rawDesc = []byte{
 	0x73, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x68, 0x6f, 0x73, 0x74, 0x12, 0x20,
 	0x0a, 0x05, 0x73, 0x74, 0x65, 0x70, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0a, 0x2e,
 	0x52, 0x6f, 0x75, 0x74, 0x65, 0x53, 0x74, 0x65, 0x70, 0x52, 0x05, 0x73, 0x74, 0x65, 0x70, 0x73,
-	0x22, 0x3d, 0x0a, 0x09, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x53, 0x74, 0x65, 0x70, 0x12, 0x18, 0x0a,
-	0x07, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
-	0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x63, 0x6f, 0x6e, 0x66, 0x69,
-	0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x32,
-	0xbd, 0x02, 0x0a, 0x07, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x12, 0x2f, 0x0a, 0x08, 0x53,
-	0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x12, 0x10, 0x2e, 0x53, 0x65, 0x74, 0x52, 0x6f, 0x75,
-	0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e, 0x53, 0x65, 0x74, 0x52,
-	0x6f, 0x75, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2f, 0x0a, 0x08,
-	0x47, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x12, 0x10, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f,
-	0x75, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e, 0x47, 0x65, 0x74,
-	0x52, 0x6f, 0x75, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3b, 0x0a,
-	0x0c, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x53, 0x74, 0x65, 0x70, 0x12, 0x14, 0x2e,
-	0x47, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x53, 0x74, 0x65, 0x70, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x53, 0x74,
-	0x65, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3e, 0x0a, 0x0d, 0x47, 0x65,
-	0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x53, 0x74, 0x61, 0x72, 0x74, 0x12, 0x15, 0x2e, 0x47, 0x65,
-	0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x53, 0x74, 0x61, 0x72, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x1a, 0x16, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x53, 0x74, 0x61,
-	0x72, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x53, 0x0a, 0x14, 0x47, 0x65,
-	0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x73, 0x49, 0x6e, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61,
-	0x63, 0x65, 0x12, 0x1c, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x73, 0x49, 0x6e,
-	0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x1d, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x73, 0x49, 0x6e, 0x4e, 0x61,
-	0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42,
-	0x2f, 0x5a, 0x2d, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6b, 0x75,
-	0x6c, 0x79, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c,
-	0x2f, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x3b, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x22, 0x4e, 0x0a, 0x09, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x53, 0x74, 0x65, 0x70, 0x12, 0x29, 0x0a,
+	0x07, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f,
+	0x2e, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x64, 0x4e, 0x61, 0x6d, 0x65, 0x52,
+	0x07, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x63, 0x6f, 0x6e, 0x66,
+	0x69, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67,
+	0x22, 0x70, 0x0a, 0x11, 0x53, 0x65, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x37, 0x0a, 0x0e, 0x6e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61,
+	0x63, 0x65, 0x64, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e,
+	0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x64, 0x4e, 0x61, 0x6d, 0x65, 0x52, 0x0e,
+	0x6e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x64, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x22,
+	0x0a, 0x07, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x08, 0x2e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x52, 0x07, 0x73, 0x65, 0x72, 0x76, 0x69,
+	0x63, 0x65, 0x22, 0x4c, 0x0a, 0x11, 0x47, 0x65, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x37, 0x0a, 0x0e, 0x6e, 0x61, 0x6d, 0x65, 0x73,
+	0x70, 0x61, 0x63, 0x65, 0x64, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x0f, 0x2e, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x64, 0x4e, 0x61, 0x6d, 0x65,
+	0x52, 0x0e, 0x6e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x64, 0x4e, 0x61, 0x6d, 0x65,
+	0x22, 0x38, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x22, 0x0a, 0x07, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x08, 0x2e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x52, 0x07, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x22, 0x3d, 0x0a, 0x1d, 0x47, 0x65,
+	0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x49, 0x6e, 0x4e, 0x61, 0x6d, 0x65, 0x73,
+	0x70, 0x61, 0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1c, 0x0a, 0x09, 0x6e,
+	0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
+	0x6e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x22, 0x36, 0x0a, 0x1e, 0x47, 0x65, 0x74,
+	0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x49, 0x6e, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70,
+	0x61, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x6e,
+	0x61, 0x6d, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x05, 0x6e, 0x61, 0x6d, 0x65,
+	0x73, 0x22, 0xf8, 0x01, 0x0a, 0x07, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x14, 0x0a,
+	0x05, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x69, 0x6d,
+	0x61, 0x67, 0x65, 0x12, 0x20, 0x0a, 0x0b, 0x70, 0x75, 0x6c, 0x6c, 0x53, 0x65, 0x63, 0x72, 0x65,
+	0x74, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x70, 0x75, 0x6c, 0x6c, 0x53, 0x65,
+	0x63, 0x72, 0x65, 0x74, 0x73, 0x12, 0x1a, 0x0a, 0x08, 0x72, 0x65, 0x70, 0x6c, 0x69, 0x63, 0x61,
+	0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x08, 0x72, 0x65, 0x70, 0x6c, 0x69, 0x63, 0x61,
+	0x73, 0x12, 0x3b, 0x0a, 0x0b, 0x65, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74,
+	0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x2e, 0x45, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x45, 0x6e, 0x74, 0x72,
+	0x79, 0x52, 0x0b, 0x65, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x1c,
+	0x0a, 0x09, 0x61, 0x72, 0x67, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28,
+	0x09, 0x52, 0x09, 0x61, 0x72, 0x67, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x1a, 0x3e, 0x0a, 0x10,
+	0x45, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x45, 0x6e, 0x74, 0x72, 0x79,
+	0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b,
+	0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x32, 0xf9, 0x03, 0x0a,
+	0x07, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x12, 0x2f, 0x0a, 0x08, 0x53, 0x65, 0x74, 0x52,
+	0x6f, 0x75, 0x74, 0x65, 0x12, 0x10, 0x2e, 0x53, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e, 0x53, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74,
+	0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2f, 0x0a, 0x08, 0x47, 0x65, 0x74,
+	0x52, 0x6f, 0x75, 0x74, 0x65, 0x12, 0x10, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x75,
+	0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3b, 0x0a, 0x0c, 0x47, 0x65,
+	0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x53, 0x74, 0x65, 0x70, 0x12, 0x14, 0x2e, 0x47, 0x65, 0x74,
+	0x52, 0x6f, 0x75, 0x74, 0x65, 0x53, 0x74, 0x65, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x15, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x53, 0x74, 0x65, 0x70, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3e, 0x0a, 0x0d, 0x47, 0x65, 0x74, 0x52, 0x6f,
+	0x75, 0x74, 0x65, 0x53, 0x74, 0x61, 0x72, 0x74, 0x12, 0x15, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f,
+	0x75, 0x74, 0x65, 0x53, 0x74, 0x61, 0x72, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x16, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x53, 0x74, 0x61, 0x72, 0x74, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x53, 0x0a, 0x14, 0x47, 0x65, 0x74, 0x52, 0x6f,
+	0x75, 0x74, 0x65, 0x73, 0x49, 0x6e, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x12,
+	0x1c, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x73, 0x49, 0x6e, 0x4e, 0x61, 0x6d,
+	0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e,
+	0x47, 0x65, 0x74, 0x52, 0x6f, 0x75, 0x74, 0x65, 0x73, 0x49, 0x6e, 0x4e, 0x61, 0x6d, 0x65, 0x73,
+	0x70, 0x61, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x28, 0x0a, 0x0a,
+	0x53, 0x65, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x12, 0x2e, 0x53, 0x65, 0x74,
+	0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x06,
+	0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x35, 0x0a, 0x0a, 0x47, 0x65, 0x74, 0x53, 0x65, 0x72,
+	0x76, 0x69, 0x63, 0x65, 0x12, 0x12, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x13, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x59, 0x0a,
+	0x16, 0x47, 0x65, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x49, 0x6e, 0x4e, 0x61,
+	0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65, 0x12, 0x1e, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x65, 0x72,
+	0x76, 0x69, 0x63, 0x65, 0x73, 0x49, 0x6e, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x65, 0x72,
+	0x76, 0x69, 0x63, 0x65, 0x73, 0x49, 0x6e, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70, 0x61, 0x63, 0x65,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x2f, 0x5a, 0x2d, 0x67, 0x69, 0x74, 0x68,
+	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6b, 0x75, 0x6c, 0x79, 0x63, 0x6c, 0x6f, 0x75, 0x64,
+	0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67,
+	0x65, 0x3b, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -925,23 +1299,31 @@ func file_storage_proto_rawDescGZIP() []byte {
 	return file_storage_proto_rawDescData
 }
 
-var file_storage_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_storage_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_storage_proto_goTypes = []interface{}{
-	(*NamespacedName)(nil),               // 0: NamespacedName
-	(*SetRouteRequest)(nil),              // 1: SetRouteRequest
-	(*SetRouteResponse)(nil),             // 2: SetRouteResponse
-	(*GetRouteRequest)(nil),              // 3: GetRouteRequest
-	(*GetRouteResponse)(nil),             // 4: GetRouteResponse
-	(*GetRouteStepRequest)(nil),          // 5: GetRouteStepRequest
-	(*GetRouteStepResponse)(nil),         // 6: GetRouteStepResponse
-	(*GetRouteStartRequest)(nil),         // 7: GetRouteStartRequest
-	(*GetRouteStartResponse)(nil),        // 8: GetRouteStartResponse
-	(*GetRoutesInNamespaceRequest)(nil),  // 9: GetRoutesInNamespaceRequest
-	(*GetRoutesInNamespaceResponse)(nil), // 10: GetRoutesInNamespaceResponse
-	(*RouteWithId)(nil),                  // 11: RouteWithId
-	(*Route)(nil),                        // 12: Route
-	(*RouteStep)(nil),                    // 13: RouteStep
-	(*common.Endpoint)(nil),              // 14: Endpoint
+	(*NamespacedName)(nil),                 // 0: NamespacedName
+	(*SetRouteRequest)(nil),                // 1: SetRouteRequest
+	(*SetRouteResponse)(nil),               // 2: SetRouteResponse
+	(*GetRouteRequest)(nil),                // 3: GetRouteRequest
+	(*GetRouteResponse)(nil),               // 4: GetRouteResponse
+	(*GetRouteStepRequest)(nil),            // 5: GetRouteStepRequest
+	(*GetRouteStepResponse)(nil),           // 6: GetRouteStepResponse
+	(*GetRouteStartRequest)(nil),           // 7: GetRouteStartRequest
+	(*GetRouteStartResponse)(nil),          // 8: GetRouteStartResponse
+	(*GetRoutesInNamespaceRequest)(nil),    // 9: GetRoutesInNamespaceRequest
+	(*GetRoutesInNamespaceResponse)(nil),   // 10: GetRoutesInNamespaceResponse
+	(*RouteWithId)(nil),                    // 11: RouteWithId
+	(*Route)(nil),                          // 12: Route
+	(*RouteStep)(nil),                      // 13: RouteStep
+	(*SetServiceRequest)(nil),              // 14: SetServiceRequest
+	(*GetServiceRequest)(nil),              // 15: GetServiceRequest
+	(*GetServiceResponse)(nil),             // 16: GetServiceResponse
+	(*GetServicesInNamespaceRequest)(nil),  // 17: GetServicesInNamespaceRequest
+	(*GetServicesInNamespaceResponse)(nil), // 18: GetServicesInNamespaceResponse
+	(*Service)(nil),                        // 19: Service
+	nil,                                    // 20: Service.EnvironmentEntry
+	(*common.Endpoint)(nil),                // 21: Endpoint
+	(*common.Empty)(nil),                   // 22: Empty
 }
 var file_storage_proto_depIdxs = []int32{
 	0,  // 0: SetRouteRequest.namespacedName:type_name -> NamespacedName
@@ -951,24 +1333,36 @@ var file_storage_proto_depIdxs = []int32{
 	0,  // 4: GetRouteStepRequest.namespacedName:type_name -> NamespacedName
 	13, // 5: GetRouteStepResponse.step:type_name -> RouteStep
 	13, // 6: GetRouteStartResponse.step:type_name -> RouteStep
-	14, // 7: GetRouteStartResponse.endpoints:type_name -> Endpoint
+	21, // 7: GetRouteStartResponse.endpoints:type_name -> Endpoint
 	12, // 8: RouteWithId.route:type_name -> Route
 	13, // 9: Route.steps:type_name -> RouteStep
-	1,  // 10: Storage.SetRoute:input_type -> SetRouteRequest
-	3,  // 11: Storage.GetRoute:input_type -> GetRouteRequest
-	5,  // 12: Storage.GetRouteStep:input_type -> GetRouteStepRequest
-	7,  // 13: Storage.GetRouteStart:input_type -> GetRouteStartRequest
-	9,  // 14: Storage.GetRoutesInNamespace:input_type -> GetRoutesInNamespaceRequest
-	2,  // 15: Storage.SetRoute:output_type -> SetRouteResponse
-	4,  // 16: Storage.GetRoute:output_type -> GetRouteResponse
-	6,  // 17: Storage.GetRouteStep:output_type -> GetRouteStepResponse
-	8,  // 18: Storage.GetRouteStart:output_type -> GetRouteStartResponse
-	10, // 19: Storage.GetRoutesInNamespace:output_type -> GetRoutesInNamespaceResponse
-	15, // [15:20] is the sub-list for method output_type
-	10, // [10:15] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	0,  // 10: RouteStep.service:type_name -> NamespacedName
+	0,  // 11: SetServiceRequest.namespacedName:type_name -> NamespacedName
+	19, // 12: SetServiceRequest.service:type_name -> Service
+	0,  // 13: GetServiceRequest.namespacedName:type_name -> NamespacedName
+	19, // 14: GetServiceResponse.service:type_name -> Service
+	20, // 15: Service.environment:type_name -> Service.EnvironmentEntry
+	1,  // 16: Storage.SetRoute:input_type -> SetRouteRequest
+	3,  // 17: Storage.GetRoute:input_type -> GetRouteRequest
+	5,  // 18: Storage.GetRouteStep:input_type -> GetRouteStepRequest
+	7,  // 19: Storage.GetRouteStart:input_type -> GetRouteStartRequest
+	9,  // 20: Storage.GetRoutesInNamespace:input_type -> GetRoutesInNamespaceRequest
+	14, // 21: Storage.SetService:input_type -> SetServiceRequest
+	15, // 22: Storage.GetService:input_type -> GetServiceRequest
+	17, // 23: Storage.GetServicesInNamespace:input_type -> GetServicesInNamespaceRequest
+	2,  // 24: Storage.SetRoute:output_type -> SetRouteResponse
+	4,  // 25: Storage.GetRoute:output_type -> GetRouteResponse
+	6,  // 26: Storage.GetRouteStep:output_type -> GetRouteStepResponse
+	8,  // 27: Storage.GetRouteStart:output_type -> GetRouteStartResponse
+	10, // 28: Storage.GetRoutesInNamespace:output_type -> GetRoutesInNamespaceResponse
+	22, // 29: Storage.SetService:output_type -> Empty
+	16, // 30: Storage.GetService:output_type -> GetServiceResponse
+	18, // 31: Storage.GetServicesInNamespace:output_type -> GetServicesInNamespaceResponse
+	24, // [24:32] is the sub-list for method output_type
+	16, // [16:24] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_storage_proto_init() }
@@ -1145,6 +1539,78 @@ func file_storage_proto_init() {
 				return nil
 			}
 		}
+		file_storage_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SetServiceRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_storage_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetServiceRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_storage_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetServiceResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_storage_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetServicesInNamespaceRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_storage_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetServicesInNamespaceResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_storage_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Service); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_storage_proto_msgTypes[3].OneofWrappers = []interface{}{
 		(*GetRouteRequest_NamespacedName)(nil),
@@ -1160,7 +1626,7 @@ func file_storage_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_storage_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   14,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -1186,11 +1652,16 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type StorageClient interface {
+	// Routes
 	SetRoute(ctx context.Context, in *SetRouteRequest, opts ...grpc.CallOption) (*SetRouteResponse, error)
 	GetRoute(ctx context.Context, in *GetRouteRequest, opts ...grpc.CallOption) (*GetRouteResponse, error)
 	GetRouteStep(ctx context.Context, in *GetRouteStepRequest, opts ...grpc.CallOption) (*GetRouteStepResponse, error)
 	GetRouteStart(ctx context.Context, in *GetRouteStartRequest, opts ...grpc.CallOption) (*GetRouteStartResponse, error)
 	GetRoutesInNamespace(ctx context.Context, in *GetRoutesInNamespaceRequest, opts ...grpc.CallOption) (*GetRoutesInNamespaceResponse, error)
+	// Services
+	SetService(ctx context.Context, in *SetServiceRequest, opts ...grpc.CallOption) (*common.Empty, error)
+	GetService(ctx context.Context, in *GetServiceRequest, opts ...grpc.CallOption) (*GetServiceResponse, error)
+	GetServicesInNamespace(ctx context.Context, in *GetServicesInNamespaceRequest, opts ...grpc.CallOption) (*GetServicesInNamespaceResponse, error)
 }
 
 type storageClient struct {
@@ -1246,13 +1717,45 @@ func (c *storageClient) GetRoutesInNamespace(ctx context.Context, in *GetRoutesI
 	return out, nil
 }
 
+func (c *storageClient) SetService(ctx context.Context, in *SetServiceRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/Storage/SetService", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *storageClient) GetService(ctx context.Context, in *GetServiceRequest, opts ...grpc.CallOption) (*GetServiceResponse, error) {
+	out := new(GetServiceResponse)
+	err := c.cc.Invoke(ctx, "/Storage/GetService", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *storageClient) GetServicesInNamespace(ctx context.Context, in *GetServicesInNamespaceRequest, opts ...grpc.CallOption) (*GetServicesInNamespaceResponse, error) {
+	out := new(GetServicesInNamespaceResponse)
+	err := c.cc.Invoke(ctx, "/Storage/GetServicesInNamespace", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // StorageServer is the server API for Storage service.
 type StorageServer interface {
+	// Routes
 	SetRoute(context.Context, *SetRouteRequest) (*SetRouteResponse, error)
 	GetRoute(context.Context, *GetRouteRequest) (*GetRouteResponse, error)
 	GetRouteStep(context.Context, *GetRouteStepRequest) (*GetRouteStepResponse, error)
 	GetRouteStart(context.Context, *GetRouteStartRequest) (*GetRouteStartResponse, error)
 	GetRoutesInNamespace(context.Context, *GetRoutesInNamespaceRequest) (*GetRoutesInNamespaceResponse, error)
+	// Services
+	SetService(context.Context, *SetServiceRequest) (*common.Empty, error)
+	GetService(context.Context, *GetServiceRequest) (*GetServiceResponse, error)
+	GetServicesInNamespace(context.Context, *GetServicesInNamespaceRequest) (*GetServicesInNamespaceResponse, error)
 }
 
 // UnimplementedStorageServer can be embedded to have forward compatible implementations.
@@ -1273,6 +1776,15 @@ func (*UnimplementedStorageServer) GetRouteStart(context.Context, *GetRouteStart
 }
 func (*UnimplementedStorageServer) GetRoutesInNamespace(context.Context, *GetRoutesInNamespaceRequest) (*GetRoutesInNamespaceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRoutesInNamespace not implemented")
+}
+func (*UnimplementedStorageServer) SetService(context.Context, *SetServiceRequest) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetService not implemented")
+}
+func (*UnimplementedStorageServer) GetService(context.Context, *GetServiceRequest) (*GetServiceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetService not implemented")
+}
+func (*UnimplementedStorageServer) GetServicesInNamespace(context.Context, *GetServicesInNamespaceRequest) (*GetServicesInNamespaceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetServicesInNamespace not implemented")
 }
 
 func RegisterStorageServer(s *grpc.Server, srv StorageServer) {
@@ -1369,6 +1881,60 @@ func _Storage_GetRoutesInNamespace_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Storage_SetService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetServiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StorageServer).SetService(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Storage/SetService",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StorageServer).SetService(ctx, req.(*SetServiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Storage_GetService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetServiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StorageServer).GetService(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Storage/GetService",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StorageServer).GetService(ctx, req.(*GetServiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Storage_GetServicesInNamespace_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetServicesInNamespaceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StorageServer).GetServicesInNamespace(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Storage/GetServicesInNamespace",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StorageServer).GetServicesInNamespace(ctx, req.(*GetServicesInNamespaceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Storage_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "Storage",
 	HandlerType: (*StorageServer)(nil),
@@ -1392,6 +1958,18 @@ var _Storage_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetRoutesInNamespace",
 			Handler:    _Storage_GetRoutesInNamespace_Handler,
+		},
+		{
+			MethodName: "SetService",
+			Handler:    _Storage_SetService_Handler,
+		},
+		{
+			MethodName: "GetService",
+			Handler:    _Storage_GetService_Handler,
+		},
+		{
+			MethodName: "GetServicesInNamespace",
+			Handler:    _Storage_GetServicesInNamespace_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
