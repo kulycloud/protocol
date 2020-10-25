@@ -2,3 +2,12 @@ syntax = "proto3";
 
 option go_package = "github.com/kulycloud/protocol/services;services";
 
+import "common.proto";
+
+service ServiceManager {
+  rpc Reconcile(ReconcileRequest) returns (Empty);
+}
+
+message ReconcileRequest {
+  string namespace = 1;
+}
