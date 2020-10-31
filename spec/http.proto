@@ -4,13 +4,18 @@ option go_package = "github.com/kulycloud/protocol/http;http";
 
 import "storage.proto";
 
-message HttpRequest {
+service Http {
+    rpc ProcessRequest(stream Request) returns (stream Response);
+}
+
+// request
+
+message RequestHeader {
     message HttpData {
         string method = 1;
         string path = 2;
         map<string, string> headers = 3;
         string source = 4;
-        string body = 5;
     }
     message KulyData {
         string route_uid = 1;
@@ -24,10 +29,25 @@ message HttpRequest {
     map<string, string> service_data = 3;
 }
 
-message HttpResponse {
+message Request {
+    oneof content {
+        RequestHeader header = 1;
+        bytes body_chunk = 2;
+    }
+}
+
+// response
+
+message ResponseHeader {
     int32 status = 1;
     map<string, string> headers = 2;
-    string body = 3;
     string request_uid = 4;
+}
+
+message Response {
+    oneof content {
+        ResponseHeader header = 1;
+        bytes body_chunk = 2;
+    }
 }
 
