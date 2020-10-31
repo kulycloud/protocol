@@ -7,12 +7,8 @@
 package control_plane
 
 import (
-	context "context"
 	proto "github.com/golang/protobuf/proto"
 	common "github.com/kulycloud/protocol/common"
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -226,84 +222,4 @@ func file_control_plane_proto_init() {
 	file_control_plane_proto_rawDesc = nil
 	file_control_plane_proto_goTypes = nil
 	file_control_plane_proto_depIdxs = nil
-}
-
-// Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConnInterface
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
-
-// ControlPlaneClient is the client API for ControlPlane service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type ControlPlaneClient interface {
-	RegisterComponent(ctx context.Context, in *RegisterComponentRequest, opts ...grpc.CallOption) (*RegisterComponentResult, error)
-}
-
-type controlPlaneClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewControlPlaneClient(cc grpc.ClientConnInterface) ControlPlaneClient {
-	return &controlPlaneClient{cc}
-}
-
-func (c *controlPlaneClient) RegisterComponent(ctx context.Context, in *RegisterComponentRequest, opts ...grpc.CallOption) (*RegisterComponentResult, error) {
-	out := new(RegisterComponentResult)
-	err := c.cc.Invoke(ctx, "/ControlPlane/RegisterComponent", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// ControlPlaneServer is the server API for ControlPlane service.
-type ControlPlaneServer interface {
-	RegisterComponent(context.Context, *RegisterComponentRequest) (*RegisterComponentResult, error)
-}
-
-// UnimplementedControlPlaneServer can be embedded to have forward compatible implementations.
-type UnimplementedControlPlaneServer struct {
-}
-
-func (*UnimplementedControlPlaneServer) RegisterComponent(context.Context, *RegisterComponentRequest) (*RegisterComponentResult, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RegisterComponent not implemented")
-}
-
-func RegisterControlPlaneServer(s *grpc.Server, srv ControlPlaneServer) {
-	s.RegisterService(&_ControlPlane_serviceDesc, srv)
-}
-
-func _ControlPlane_RegisterComponent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RegisterComponentRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ControlPlaneServer).RegisterComponent(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/ControlPlane/RegisterComponent",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ControlPlaneServer).RegisterComponent(ctx, req.(*RegisterComponentRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _ControlPlane_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "ControlPlane",
-	HandlerType: (*ControlPlaneServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "RegisterComponent",
-			Handler:    _ControlPlane_RegisterComponent_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "control-plane.proto",
 }

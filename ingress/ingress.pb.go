@@ -7,9 +7,7 @@
 package ingress
 
 import (
-	context "context"
 	proto "github.com/golang/protobuf/proto"
-	grpc "google.golang.org/grpc"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -68,46 +66,4 @@ func file_ingress_proto_init() {
 	file_ingress_proto_rawDesc = nil
 	file_ingress_proto_goTypes = nil
 	file_ingress_proto_depIdxs = nil
-}
-
-// Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConnInterface
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
-
-// IngressClient is the client API for Ingress service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type IngressClient interface {
-}
-
-type ingressClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewIngressClient(cc grpc.ClientConnInterface) IngressClient {
-	return &ingressClient{cc}
-}
-
-// IngressServer is the server API for Ingress service.
-type IngressServer interface {
-}
-
-// UnimplementedIngressServer can be embedded to have forward compatible implementations.
-type UnimplementedIngressServer struct {
-}
-
-func RegisterIngressServer(s *grpc.Server, srv IngressServer) {
-	s.RegisterService(&_Ingress_serviceDesc, srv)
-}
-
-var _Ingress_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "Ingress",
-	HandlerType: (*IngressServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "ingress.proto",
 }
