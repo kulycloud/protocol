@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option go_package = "github.com/kulycloud/protocol/load-balancer;load_balancer";
+
+import "common.proto";
+
+service LoadBalancer {
+  rpc SetEndpoints(EndpointList) returns (Empty) {}
+}
+
