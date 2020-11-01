@@ -28,6 +28,9 @@ type StorageClient interface {
 	SetService(ctx context.Context, in *SetServiceRequest, opts ...grpc.CallOption) (*common.Empty, error)
 	GetService(ctx context.Context, in *GetServiceRequest, opts ...grpc.CallOption) (*GetServiceResponse, error)
 	GetServicesInNamespace(ctx context.Context, in *GetServicesInNamespaceRequest, opts ...grpc.CallOption) (*GetServicesInNamespaceResponse, error)
+	// Endpoints
+	GetServiceLBEndpoints(ctx context.Context, in *NamespacedName, opts ...grpc.CallOption) (*common.EndpointList, error)
+	SetServiceLBEndpoints(ctx context.Context, in *SetServiceLBEndpointsRequest, opts ...grpc.CallOption) (*common.Empty, error)
 }
 
 type storageClient struct {
@@ -110,6 +113,24 @@ func (c *storageClient) GetServicesInNamespace(ctx context.Context, in *GetServi
 	return out, nil
 }
 
+func (c *storageClient) GetServiceLBEndpoints(ctx context.Context, in *NamespacedName, opts ...grpc.CallOption) (*common.EndpointList, error) {
+	out := new(common.EndpointList)
+	err := c.cc.Invoke(ctx, "/Storage/GetServiceLBEndpoints", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *storageClient) SetServiceLBEndpoints(ctx context.Context, in *SetServiceLBEndpointsRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/Storage/SetServiceLBEndpoints", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // StorageServer is the server API for Storage service.
 // All implementations must embed UnimplementedStorageServer
 // for forward compatibility
@@ -124,6 +145,9 @@ type StorageServer interface {
 	SetService(context.Context, *SetServiceRequest) (*common.Empty, error)
 	GetService(context.Context, *GetServiceRequest) (*GetServiceResponse, error)
 	GetServicesInNamespace(context.Context, *GetServicesInNamespaceRequest) (*GetServicesInNamespaceResponse, error)
+	// Endpoints
+	GetServiceLBEndpoints(context.Context, *NamespacedName) (*common.EndpointList, error)
+	SetServiceLBEndpoints(context.Context, *SetServiceLBEndpointsRequest) (*common.Empty, error)
 	mustEmbedUnimplementedStorageServer()
 }
 
@@ -154,6 +178,12 @@ func (UnimplementedStorageServer) GetService(context.Context, *GetServiceRequest
 }
 func (UnimplementedStorageServer) GetServicesInNamespace(context.Context, *GetServicesInNamespaceRequest) (*GetServicesInNamespaceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetServicesInNamespace not implemented")
+}
+func (UnimplementedStorageServer) GetServiceLBEndpoints(context.Context, *NamespacedName) (*common.EndpointList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetServiceLBEndpoints not implemented")
+}
+func (UnimplementedStorageServer) SetServiceLBEndpoints(context.Context, *SetServiceLBEndpointsRequest) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetServiceLBEndpoints not implemented")
 }
 func (UnimplementedStorageServer) mustEmbedUnimplementedStorageServer() {}
 
@@ -312,6 +342,42 @@ func _Storage_GetServicesInNamespace_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Storage_GetServiceLBEndpoints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NamespacedName)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StorageServer).GetServiceLBEndpoints(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Storage/GetServiceLBEndpoints",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StorageServer).GetServiceLBEndpoints(ctx, req.(*NamespacedName))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Storage_SetServiceLBEndpoints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetServiceLBEndpointsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StorageServer).SetServiceLBEndpoints(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Storage/SetServiceLBEndpoints",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StorageServer).SetServiceLBEndpoints(ctx, req.(*SetServiceLBEndpointsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Storage_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "Storage",
 	HandlerType: (*StorageServer)(nil),
@@ -347,6 +413,14 @@ var _Storage_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetServicesInNamespace",
 			Handler:    _Storage_GetServicesInNamespace_Handler,
+		},
+		{
+			MethodName: "GetServiceLBEndpoints",
+			Handler:    _Storage_GetServiceLBEndpoints_Handler,
+		},
+		{
+			MethodName: "SetServiceLBEndpoints",
+			Handler:    _Storage_SetServiceLBEndpoints_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

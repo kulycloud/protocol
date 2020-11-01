@@ -16,6 +16,10 @@ service Storage {
   rpc SetService(SetServiceRequest) returns (Empty);
   rpc GetService(GetServiceRequest) returns (GetServiceResponse);
   rpc GetServicesInNamespace(GetServicesInNamespaceRequest) returns (GetServicesInNamespaceResponse);
+
+  // Endpoints
+  rpc GetServiceLBEndpoints(NamespacedName) returns (EndpointList);
+  rpc SetServiceLBEndpoints(SetServiceLBEndpointsRequest) returns (Empty);
 }
 
 message NamespacedName {
@@ -125,3 +129,11 @@ message Service {
   repeated string arguments = 5;
 }
 
+// --------------------------------
+// ENDPOINTS
+// --------------------------------
+
+message SetServiceLBEndpointsRequest {
+  NamespacedName serviceName = 1;
+  repeated Endpoint endpoints = 2;
+}
