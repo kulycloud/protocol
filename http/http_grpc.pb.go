@@ -38,8 +38,8 @@ func (c *httpClient) ProcessRequest(ctx context.Context, opts ...grpc.CallOption
 }
 
 type Http_ProcessRequestClient interface {
-	Send(*Request) error
-	Recv() (*Response, error)
+	Send(*Chunk) error
+	Recv() (*Chunk, error)
 	grpc.ClientStream
 }
 
@@ -47,12 +47,12 @@ type httpProcessRequestClient struct {
 	grpc.ClientStream
 }
 
-func (x *httpProcessRequestClient) Send(m *Request) error {
+func (x *httpProcessRequestClient) Send(m *Chunk) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *httpProcessRequestClient) Recv() (*Response, error) {
-	m := new(Response)
+func (x *httpProcessRequestClient) Recv() (*Chunk, error) {
+	m := new(Chunk)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -92,8 +92,8 @@ func _Http_ProcessRequest_Handler(srv interface{}, stream grpc.ServerStream) err
 }
 
 type Http_ProcessRequestServer interface {
-	Send(*Response) error
-	Recv() (*Request, error)
+	Send(*Chunk) error
+	Recv() (*Chunk, error)
 	grpc.ServerStream
 }
 
@@ -101,12 +101,12 @@ type httpProcessRequestServer struct {
 	grpc.ServerStream
 }
 
-func (x *httpProcessRequestServer) Send(m *Response) error {
+func (x *httpProcessRequestServer) Send(m *Chunk) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *httpProcessRequestServer) Recv() (*Request, error) {
-	m := new(Request)
+func (x *httpProcessRequestServer) Recv() (*Chunk, error) {
+	m := new(Chunk)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
