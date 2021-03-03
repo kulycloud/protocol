@@ -89,7 +89,7 @@ message GetRoutesInNamespaceRequest {
 }
 
 message GetRoutesInNamespaceResponse {
-  repeated string routes = 1;
+  repeated string routeUids = 1;
 }
 
 message RouteWithId {
