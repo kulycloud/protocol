@@ -95,6 +95,7 @@ message GetRoutesInNamespaceResponse {
 message RouteWithId {
   string uid = 1;
   Route route = 2;
+  NamespacedName name = 3;
 }
 
 message Route {
