@@ -93,5 +93,5 @@ var _RouteProcessor_serviceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "route-processor.proto",
+	Metadata: "api-server.proto",
 }
