@@ -105,18 +105,20 @@ message Route {
 message RouteStep {
   NamespacedName service = 1;
   string config = 2;
-  map<string, uint32> references = 3;
+  string name = 3;
+  map<string, uint32> references = 4;
 }
 
 message PopulatedRouteStep {
   NamespacedName service = 1;
   string config = 2;
-  map<string, PopulatedRouteStepReference> references = 3;
+  string name = 3;
+  map<string, PopulatedRouteStepReference> references = 4;
 }
 
 message PopulatedRouteStepReference {
   uint32 step = 1;
-  repeated Endpoint endpoints = 2;
+  repeated Endpoint endpoints = 3;
 }
 
 // --------------------------------
