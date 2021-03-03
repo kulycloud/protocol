@@ -1,21 +1,7 @@
 syntax = "proto3";
 
-option go_package = "github.com/kulycloud/protocol/route-processor;route_processor";
+option go_package = "github.com/kulycloud/protocol/api_server;api_server";
 
-service RouteProcessor {
-  rpc ProcessRoute(RouteProcessorRequest) returns (RouteProcessorResponse);
-}
+service ApiServer {
 
-enum RouteProcessorStatus {
-  OK = 0;
-  ERROR = 1;
-}
-
-message RouteProcessorRequest {
-  string user = 1;
-  string data = 2;
-}
-
-message RouteProcessorResponse {
-  RouteProcessorStatus status = 1;
 }
