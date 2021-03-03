@@ -21,7 +21,7 @@ message RequestHeader {
     message KulyData {
         string route_uid = 1;
         uint32 step_uid = 2;
-        RouteStep step = 3;
+        PopulatedRouteStep step = 3;
         string request_uid = 4;
     }
     

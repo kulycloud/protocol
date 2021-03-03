@@ -22,12 +22,15 @@ type StorageClient interface {
 	SetRoute(ctx context.Context, in *SetRouteRequest, opts ...grpc.CallOption) (*SetRouteResponse, error)
 	GetRoute(ctx context.Context, in *GetRouteRequest, opts ...grpc.CallOption) (*GetRouteResponse, error)
 	GetRouteStep(ctx context.Context, in *GetRouteStepRequest, opts ...grpc.CallOption) (*GetRouteStepResponse, error)
+	GetPopulatedRouteStep(ctx context.Context, in *GetRouteStepRequest, opts ...grpc.CallOption) (*GetPopulatedRouteStepResponse, error)
 	GetRouteStart(ctx context.Context, in *GetRouteStartRequest, opts ...grpc.CallOption) (*GetRouteStartResponse, error)
 	GetRoutesInNamespace(ctx context.Context, in *GetRoutesInNamespaceRequest, opts ...grpc.CallOption) (*GetRoutesInNamespaceResponse, error)
+	DeleteRoute(ctx context.Context, in *DeleteRouteRequest, opts ...grpc.CallOption) (*common.Empty, error)
 	// Services
 	SetService(ctx context.Context, in *SetServiceRequest, opts ...grpc.CallOption) (*common.Empty, error)
 	GetService(ctx context.Context, in *GetServiceRequest, opts ...grpc.CallOption) (*GetServiceResponse, error)
 	GetServicesInNamespace(ctx context.Context, in *GetServicesInNamespaceRequest, opts ...grpc.CallOption) (*GetServicesInNamespaceResponse, error)
+	DeleteService(ctx context.Context, in *DeleteServiceRequest, opts ...grpc.CallOption) (*common.Empty, error)
 	// Endpoints
 	GetServiceLBEndpoints(ctx context.Context, in *NamespacedName, opts ...grpc.CallOption) (*common.EndpointList, error)
 	SetServiceLBEndpoints(ctx context.Context, in *SetServiceLBEndpointsRequest, opts ...grpc.CallOption) (*common.Empty, error)
@@ -68,6 +71,15 @@ func (c *storageClient) GetRouteStep(ctx context.Context, in *GetRouteStepReques
 	return out, nil
 }
 
+func (c *storageClient) GetPopulatedRouteStep(ctx context.Context, in *GetRouteStepRequest, opts ...grpc.CallOption) (*GetPopulatedRouteStepResponse, error) {
+	out := new(GetPopulatedRouteStepResponse)
+	err := c.cc.Invoke(ctx, "/Storage/GetPopulatedRouteStep", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *storageClient) GetRouteStart(ctx context.Context, in *GetRouteStartRequest, opts ...grpc.CallOption) (*GetRouteStartResponse, error) {
 	out := new(GetRouteStartResponse)
 	err := c.cc.Invoke(ctx, "/Storage/GetRouteStart", in, out, opts...)
@@ -80,6 +92,15 @@ func (c *storageClient) GetRouteStart(ctx context.Context, in *GetRouteStartRequ
 func (c *storageClient) GetRoutesInNamespace(ctx context.Context, in *GetRoutesInNamespaceRequest, opts ...grpc.CallOption) (*GetRoutesInNamespaceResponse, error) {
 	out := new(GetRoutesInNamespaceResponse)
 	err := c.cc.Invoke(ctx, "/Storage/GetRoutesInNamespace", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *storageClient) DeleteRoute(ctx context.Context, in *DeleteRouteRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/Storage/DeleteRoute", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -113,6 +134,15 @@ func (c *storageClient) GetServicesInNamespace(ctx context.Context, in *GetServi
 	return out, nil
 }
 
+func (c *storageClient) DeleteService(ctx context.Context, in *DeleteServiceRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/Storage/DeleteService", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *storageClient) GetServiceLBEndpoints(ctx context.Context, in *NamespacedName, opts ...grpc.CallOption) (*common.EndpointList, error) {
 	out := new(common.EndpointList)
 	err := c.cc.Invoke(ctx, "/Storage/GetServiceLBEndpoints", in, out, opts...)
@@ -139,12 +169,15 @@ type StorageServer interface {
 	SetRoute(context.Context, *SetRouteRequest) (*SetRouteResponse, error)
 	GetRoute(context.Context, *GetRouteRequest) (*GetRouteResponse, error)
 	GetRouteStep(context.Context, *GetRouteStepRequest) (*GetRouteStepResponse, error)
+	GetPopulatedRouteStep(context.Context, *GetRouteStepRequest) (*GetPopulatedRouteStepResponse, error)
 	GetRouteStart(context.Context, *GetRouteStartRequest) (*GetRouteStartResponse, error)
 	GetRoutesInNamespace(context.Context, *GetRoutesInNamespaceRequest) (*GetRoutesInNamespaceResponse, error)
+	DeleteRoute(context.Context, *DeleteRouteRequest) (*common.Empty, error)
 	// Services
 	SetService(context.Context, *SetServiceRequest) (*common.Empty, error)
 	GetService(context.Context, *GetServiceRequest) (*GetServiceResponse, error)
 	GetServicesInNamespace(context.Context, *GetServicesInNamespaceRequest) (*GetServicesInNamespaceResponse, error)
+	DeleteService(context.Context, *DeleteServiceRequest) (*common.Empty, error)
 	// Endpoints
 	GetServiceLBEndpoints(context.Context, *NamespacedName) (*common.EndpointList, error)
 	SetServiceLBEndpoints(context.Context, *SetServiceLBEndpointsRequest) (*common.Empty, error)
@@ -164,11 +197,17 @@ func (UnimplementedStorageServer) GetRoute(context.Context, *GetRouteRequest) (*
 func (UnimplementedStorageServer) GetRouteStep(context.Context, *GetRouteStepRequest) (*GetRouteStepResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRouteStep not implemented")
 }
+func (UnimplementedStorageServer) GetPopulatedRouteStep(context.Context, *GetRouteStepRequest) (*GetPopulatedRouteStepResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPopulatedRouteStep not implemented")
+}
 func (UnimplementedStorageServer) GetRouteStart(context.Context, *GetRouteStartRequest) (*GetRouteStartResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRouteStart not implemented")
 }
 func (UnimplementedStorageServer) GetRoutesInNamespace(context.Context, *GetRoutesInNamespaceRequest) (*GetRoutesInNamespaceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRoutesInNamespace not implemented")
+}
+func (UnimplementedStorageServer) DeleteRoute(context.Context, *DeleteRouteRequest) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRoute not implemented")
 }
 func (UnimplementedStorageServer) SetService(context.Context, *SetServiceRequest) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetService not implemented")
@@ -178,6 +217,9 @@ func (UnimplementedStorageServer) GetService(context.Context, *GetServiceRequest
 }
 func (UnimplementedStorageServer) GetServicesInNamespace(context.Context, *GetServicesInNamespaceRequest) (*GetServicesInNamespaceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetServicesInNamespace not implemented")
+}
+func (UnimplementedStorageServer) DeleteService(context.Context, *DeleteServiceRequest) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteService not implemented")
 }
 func (UnimplementedStorageServer) GetServiceLBEndpoints(context.Context, *NamespacedName) (*common.EndpointList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetServiceLBEndpoints not implemented")
@@ -252,6 +294,24 @@ func _Storage_GetRouteStep_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Storage_GetPopulatedRouteStep_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRouteStepRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StorageServer).GetPopulatedRouteStep(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Storage/GetPopulatedRouteStep",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StorageServer).GetPopulatedRouteStep(ctx, req.(*GetRouteStepRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Storage_GetRouteStart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetRouteStartRequest)
 	if err := dec(in); err != nil {
@@ -284,6 +344,24 @@ func _Storage_GetRoutesInNamespace_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(StorageServer).GetRoutesInNamespace(ctx, req.(*GetRoutesInNamespaceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Storage_DeleteRoute_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRouteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StorageServer).DeleteRoute(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Storage/DeleteRoute",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StorageServer).DeleteRoute(ctx, req.(*DeleteRouteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -342,6 +420,24 @@ func _Storage_GetServicesInNamespace_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Storage_DeleteService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteServiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StorageServer).DeleteService(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Storage/DeleteService",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StorageServer).DeleteService(ctx, req.(*DeleteServiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Storage_GetServiceLBEndpoints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NamespacedName)
 	if err := dec(in); err != nil {
@@ -395,12 +491,20 @@ var _Storage_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Storage_GetRouteStep_Handler,
 		},
 		{
+			MethodName: "GetPopulatedRouteStep",
+			Handler:    _Storage_GetPopulatedRouteStep_Handler,
+		},
+		{
 			MethodName: "GetRouteStart",
 			Handler:    _Storage_GetRouteStart_Handler,
 		},
 		{
 			MethodName: "GetRoutesInNamespace",
 			Handler:    _Storage_GetRoutesInNamespace_Handler,
+		},
+		{
+			MethodName: "DeleteRoute",
+			Handler:    _Storage_DeleteRoute_Handler,
 		},
 		{
 			MethodName: "SetService",
@@ -413,6 +517,10 @@ var _Storage_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetServicesInNamespace",
 			Handler:    _Storage_GetServicesInNamespace_Handler,
+		},
+		{
+			MethodName: "DeleteService",
+			Handler:    _Storage_DeleteService_Handler,
 		},
 		{
 			MethodName: "GetServiceLBEndpoints",

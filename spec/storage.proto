@@ -9,13 +9,16 @@ service Storage {
   rpc SetRoute(SetRouteRequest) returns (SetRouteResponse);
   rpc GetRoute(GetRouteRequest) returns (GetRouteResponse);
   rpc GetRouteStep(GetRouteStepRequest) returns (GetRouteStepResponse);
+  rpc GetPopulatedRouteStep(GetRouteStepRequest) returns (GetPopulatedRouteStepResponse);
   rpc GetRouteStart(GetRouteStartRequest) returns (GetRouteStartResponse);
   rpc GetRoutesInNamespace(GetRoutesInNamespaceRequest) returns (GetRoutesInNamespaceResponse);
+  rpc DeleteRoute(DeleteRouteRequest) returns (Empty);
 
   // Services
   rpc SetService(SetServiceRequest) returns (Empty);
   rpc GetService(GetServiceRequest) returns (GetServiceResponse);
   rpc GetServicesInNamespace(GetServicesInNamespaceRequest) returns (GetServicesInNamespaceResponse);
+  rpc DeleteService(DeleteServiceRequest) returns (Empty);
 
   // Endpoints
   rpc GetServiceLBEndpoints(NamespacedName) returns (EndpointList);
@@ -47,6 +50,11 @@ message GetRouteRequest {
   };
 }
 
+message DeleteRouteRequest {
+  NamespacedName namespacedName = 1;
+}
+
+
 message GetRouteResponse {
   RouteWithId route = 1;
 }
@@ -60,7 +68,11 @@ message GetRouteStepRequest {
 }
 
 message GetRouteStepResponse {
-  RouteStep step = 3;
+  RouteStep step = 1;
+}
+
+message GetPopulatedRouteStepResponse {
+  PopulatedRouteStep step = 1;
 }
 
 message GetRouteStartRequest {
@@ -68,9 +80,8 @@ message GetRouteStartRequest {
 }
 
 message GetRouteStartResponse {
-  RouteStep step = 1;
-  string uid = 2;
-  repeated Endpoint endpoints = 3;
+  string uid = 1;
+  PopulatedRouteStepReference step = 2;
 }
 
 message GetRoutesInNamespaceRequest {
@@ -94,6 +105,18 @@ message Route {
 message RouteStep {
   NamespacedName service = 1;
   string config = 2;
+  map<string, uint32> references = 3;
+}
+
+message PopulatedRouteStep {
+  NamespacedName service = 1;
+  string config = 2;
+  map<string, PopulatedRouteStepReference> references = 3;
+}
+
+message PopulatedRouteStepReference {
+  uint32 step = 1;
+  repeated Endpoint endpoints = 2;
 }
 
 // --------------------------------
@@ -106,6 +129,10 @@ message SetServiceRequest {
 }
 
 message GetServiceRequest {
+  NamespacedName namespacedName = 1;
+}
+
+message DeleteServiceRequest {
   NamespacedName namespacedName = 1;
 }
 
