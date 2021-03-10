@@ -5,14 +5,17 @@ option go_package = "github.com/kulycloud/protocol/control-plane;control_plane";
 import "common.proto";
 
 service ControlPlane {
-  rpc RegisterComponent(RegisterComponentRequest) returns (RegisterComponentResult) {}
-}
-
-message RegisterComponentResult {
-
+  rpc RegisterComponent(RegisterComponentRequest) returns (stream Event) {}
+  rpc CreateEvent(Event) returns (Empty) {}
+  rpc ListenToEvent(ListenToEventRequest) returns (Empty) {}
 }
 
 message RegisterComponentRequest {
   string type = 1;
   Endpoint endpoint = 2;
 }
+
+message ListenToEventRequest {
+  string type = 1;
+}
+
