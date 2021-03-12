@@ -17,5 +17,6 @@ message RegisterComponentRequest {
 
 message ListenToEventRequest {
   string type = 1;
+  string destination = 2;
 }
 
