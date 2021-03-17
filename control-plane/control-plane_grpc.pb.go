@@ -4,6 +4,7 @@ package control_plane
 
 import (
 	context "context"
+	common "github.com/kulycloud/protocol/common"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -17,7 +18,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ControlPlaneClient interface {
-	RegisterComponent(ctx context.Context, in *RegisterComponentRequest, opts ...grpc.CallOption) (*RegisterComponentResult, error)
+	RegisterComponent(ctx context.Context, in *RegisterComponentRequest, opts ...grpc.CallOption) (ControlPlane_RegisterComponentClient, error)
+	CreateEvent(ctx context.Context, in *common.Event, opts ...grpc.CallOption) (*common.Empty, error)
+	ListenToEvent(ctx context.Context, in *ListenToEventRequest, opts ...grpc.CallOption) (*common.Empty, error)
 }
 
 type controlPlaneClient struct {
@@ -28,9 +31,50 @@ func NewControlPlaneClient(cc grpc.ClientConnInterface) ControlPlaneClient {
 	return &controlPlaneClient{cc}
 }
 
-func (c *controlPlaneClient) RegisterComponent(ctx context.Context, in *RegisterComponentRequest, opts ...grpc.CallOption) (*RegisterComponentResult, error) {
-	out := new(RegisterComponentResult)
-	err := c.cc.Invoke(ctx, "/ControlPlane/RegisterComponent", in, out, opts...)
+func (c *controlPlaneClient) RegisterComponent(ctx context.Context, in *RegisterComponentRequest, opts ...grpc.CallOption) (ControlPlane_RegisterComponentClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_ControlPlane_serviceDesc.Streams[0], "/ControlPlane/RegisterComponent", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &controlPlaneRegisterComponentClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ControlPlane_RegisterComponentClient interface {
+	Recv() (*common.Event, error)
+	grpc.ClientStream
+}
+
+type controlPlaneRegisterComponentClient struct {
+	grpc.ClientStream
+}
+
+func (x *controlPlaneRegisterComponentClient) Recv() (*common.Event, error) {
+	m := new(common.Event)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *controlPlaneClient) CreateEvent(ctx context.Context, in *common.Event, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/ControlPlane/CreateEvent", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *controlPlaneClient) ListenToEvent(ctx context.Context, in *ListenToEventRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/ControlPlane/ListenToEvent", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +85,9 @@ func (c *controlPlaneClient) RegisterComponent(ctx context.Context, in *Register
 // All implementations must embed UnimplementedControlPlaneServer
 // for forward compatibility
 type ControlPlaneServer interface {
-	RegisterComponent(context.Context, *RegisterComponentRequest) (*RegisterComponentResult, error)
+	RegisterComponent(*RegisterComponentRequest, ControlPlane_RegisterComponentServer) error
+	CreateEvent(context.Context, *common.Event) (*common.Empty, error)
+	ListenToEvent(context.Context, *ListenToEventRequest) (*common.Empty, error)
 	mustEmbedUnimplementedControlPlaneServer()
 }
 
@@ -49,8 +95,14 @@ type ControlPlaneServer interface {
 type UnimplementedControlPlaneServer struct {
 }
 
-func (UnimplementedControlPlaneServer) RegisterComponent(context.Context, *RegisterComponentRequest) (*RegisterComponentResult, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RegisterComponent not implemented")
+func (UnimplementedControlPlaneServer) RegisterComponent(*RegisterComponentRequest, ControlPlane_RegisterComponentServer) error {
+	return status.Errorf(codes.Unimplemented, "method RegisterComponent not implemented")
+}
+func (UnimplementedControlPlaneServer) CreateEvent(context.Context, *common.Event) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateEvent not implemented")
+}
+func (UnimplementedControlPlaneServer) ListenToEvent(context.Context, *ListenToEventRequest) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListenToEvent not implemented")
 }
 func (UnimplementedControlPlaneServer) mustEmbedUnimplementedControlPlaneServer() {}
 
@@ -65,20 +117,59 @@ func RegisterControlPlaneServer(s grpc.ServiceRegistrar, srv ControlPlaneServer)
 	s.RegisterService(&_ControlPlane_serviceDesc, srv)
 }
 
-func _ControlPlane_RegisterComponent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RegisterComponentRequest)
+func _ControlPlane_RegisterComponent_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(RegisterComponentRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ControlPlaneServer).RegisterComponent(m, &controlPlaneRegisterComponentServer{stream})
+}
+
+type ControlPlane_RegisterComponentServer interface {
+	Send(*common.Event) error
+	grpc.ServerStream
+}
+
+type controlPlaneRegisterComponentServer struct {
+	grpc.ServerStream
+}
+
+func (x *controlPlaneRegisterComponentServer) Send(m *common.Event) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ControlPlane_CreateEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(common.Event)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ControlPlaneServer).RegisterComponent(ctx, in)
+		return srv.(ControlPlaneServer).CreateEvent(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ControlPlane/RegisterComponent",
+		FullMethod: "/ControlPlane/CreateEvent",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ControlPlaneServer).RegisterComponent(ctx, req.(*RegisterComponentRequest))
+		return srv.(ControlPlaneServer).CreateEvent(ctx, req.(*common.Event))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ControlPlane_ListenToEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListenToEventRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlPlaneServer).ListenToEvent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ControlPlane/ListenToEvent",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlPlaneServer).ListenToEvent(ctx, req.(*ListenToEventRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -88,10 +179,20 @@ var _ControlPlane_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*ControlPlaneServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "RegisterComponent",
-			Handler:    _ControlPlane_RegisterComponent_Handler,
+			MethodName: "CreateEvent",
+			Handler:    _ControlPlane_CreateEvent_Handler,
+		},
+		{
+			MethodName: "ListenToEvent",
+			Handler:    _ControlPlane_ListenToEvent_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "RegisterComponent",
+			Handler:       _ControlPlane_RegisterComponent_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "control-plane.proto",
 }

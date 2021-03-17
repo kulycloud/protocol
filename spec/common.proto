@@ -15,5 +15,31 @@ message EndpointList {
 
 service Component {
   rpc Ping(Empty) returns (Empty);
-  rpc RegisterStorageEndpoints(EndpointList) returns (Empty);
 }
+
+// events
+message Event {
+  string type = 1;
+  oneof data {
+    StorageChangedEvent storageChanged = 2;
+    ConfigurationChangedEvent configurationChanged = 3;
+    ClusterChangedEvent clusterChanged = 4;
+  }
+}
+
+message StorageChangedEvent {
+  repeated Endpoint endpoints = 1;
+}
+
+message ConfigurationChangedEvent {
+  Resource source = 1;
+}
+
+message ClusterChangedEvent {
+  Resource source = 1;
+}
+
+message Resource {
+  string namespace = 1;
+}
+
