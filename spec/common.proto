@@ -15,7 +15,6 @@ message EndpointList {
 
 service Component {
   rpc Ping(Empty) returns (Empty);
-  rpc RegisterStorageEndpoints(EndpointList) returns (Empty);
 }
 
 // events
