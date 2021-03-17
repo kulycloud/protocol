@@ -18,6 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LoadBalancerClient interface {
+	SetStorageEndpoints(ctx context.Context, in *common.EndpointList, opts ...grpc.CallOption) (*common.Empty, error)
 	SetEndpoints(ctx context.Context, in *common.EndpointList, opts ...grpc.CallOption) (*common.Empty, error)
 }
 
@@ -27,6 +28,15 @@ type loadBalancerClient struct {
 
 func NewLoadBalancerClient(cc grpc.ClientConnInterface) LoadBalancerClient {
 	return &loadBalancerClient{cc}
+}
+
+func (c *loadBalancerClient) SetStorageEndpoints(ctx context.Context, in *common.EndpointList, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/LoadBalancer/SetStorageEndpoints", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *loadBalancerClient) SetEndpoints(ctx context.Context, in *common.EndpointList, opts ...grpc.CallOption) (*common.Empty, error) {
@@ -42,6 +52,7 @@ func (c *loadBalancerClient) SetEndpoints(ctx context.Context, in *common.Endpoi
 // All implementations must embed UnimplementedLoadBalancerServer
 // for forward compatibility
 type LoadBalancerServer interface {
+	SetStorageEndpoints(context.Context, *common.EndpointList) (*common.Empty, error)
 	SetEndpoints(context.Context, *common.EndpointList) (*common.Empty, error)
 	mustEmbedUnimplementedLoadBalancerServer()
 }
@@ -50,6 +61,9 @@ type LoadBalancerServer interface {
 type UnimplementedLoadBalancerServer struct {
 }
 
+func (UnimplementedLoadBalancerServer) SetStorageEndpoints(context.Context, *common.EndpointList) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetStorageEndpoints not implemented")
+}
 func (UnimplementedLoadBalancerServer) SetEndpoints(context.Context, *common.EndpointList) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetEndpoints not implemented")
 }
@@ -64,6 +78,24 @@ type UnsafeLoadBalancerServer interface {
 
 func RegisterLoadBalancerServer(s grpc.ServiceRegistrar, srv LoadBalancerServer) {
 	s.RegisterService(&_LoadBalancer_serviceDesc, srv)
+}
+
+func _LoadBalancer_SetStorageEndpoints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(common.EndpointList)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LoadBalancerServer).SetStorageEndpoints(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/LoadBalancer/SetStorageEndpoints",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LoadBalancerServer).SetStorageEndpoints(ctx, req.(*common.EndpointList))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _LoadBalancer_SetEndpoints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -88,6 +120,10 @@ var _LoadBalancer_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "LoadBalancer",
 	HandlerType: (*LoadBalancerServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "SetStorageEndpoints",
+			Handler:    _LoadBalancer_SetStorageEndpoints_Handler,
+		},
 		{
 			MethodName: "SetEndpoints",
 			Handler:    _LoadBalancer_SetEndpoints_Handler,

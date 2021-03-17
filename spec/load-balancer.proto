@@ -5,6 +5,7 @@ option go_package = "github.com/kulycloud/protocol/load-balancer;load_balancer";
 import "common.proto";
 
 service LoadBalancer {
+  rpc SetStorageEndpoints(EndpointList) returns (Empty);
   rpc SetEndpoints(EndpointList) returns (Empty) {}
 }
 
