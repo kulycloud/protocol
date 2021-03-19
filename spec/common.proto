@@ -32,16 +32,23 @@ message StorageChangedEvent {
 }
 
 message ConfigurationChangedEvent {
-  Resource source = 1;
+  Resource resource = 1;
 }
 
 message ClusterChangedEvent {
-  Resource source = 1;
+  Resource resource = 1;
+  InstanceCount serviceCount = 2;
+  InstanceCount loadBalancerCount = 3;
 }
 
 message Resource {
   string type = 1;
   string namespace = 2;
   string name = 3;
+}
+
+message InstanceCount {
+  uint32 expected = 1;
+  uint32 actual = 2;
 }
 
