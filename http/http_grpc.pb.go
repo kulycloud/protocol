@@ -4,6 +4,7 @@ package http
 
 import (
 	context "context"
+	common "github.com/kulycloud/protocol/common"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -17,6 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HttpClient interface {
+	Ping(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*common.Empty, error)
 	ProcessRequest(ctx context.Context, opts ...grpc.CallOption) (Http_ProcessRequestClient, error)
 }
 
@@ -26,6 +28,15 @@ type httpClient struct {
 
 func NewHttpClient(cc grpc.ClientConnInterface) HttpClient {
 	return &httpClient{cc}
+}
+
+func (c *httpClient) Ping(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/Http/Ping", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *httpClient) ProcessRequest(ctx context.Context, opts ...grpc.CallOption) (Http_ProcessRequestClient, error) {
@@ -63,6 +74,7 @@ func (x *httpProcessRequestClient) Recv() (*Chunk, error) {
 // All implementations must embed UnimplementedHttpServer
 // for forward compatibility
 type HttpServer interface {
+	Ping(context.Context, *common.Empty) (*common.Empty, error)
 	ProcessRequest(Http_ProcessRequestServer) error
 	mustEmbedUnimplementedHttpServer()
 }
@@ -71,6 +83,9 @@ type HttpServer interface {
 type UnimplementedHttpServer struct {
 }
 
+func (UnimplementedHttpServer) Ping(context.Context, *common.Empty) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
 func (UnimplementedHttpServer) ProcessRequest(Http_ProcessRequestServer) error {
 	return status.Errorf(codes.Unimplemented, "method ProcessRequest not implemented")
 }
@@ -85,6 +100,24 @@ type UnsafeHttpServer interface {
 
 func RegisterHttpServer(s grpc.ServiceRegistrar, srv HttpServer) {
 	s.RegisterService(&_Http_serviceDesc, srv)
+}
+
+func _Http_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(common.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HttpServer).Ping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Http/Ping",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HttpServer).Ping(ctx, req.(*common.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Http_ProcessRequest_Handler(srv interface{}, stream grpc.ServerStream) error {
@@ -116,7 +149,12 @@ func (x *httpProcessRequestServer) Recv() (*Chunk, error) {
 var _Http_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "Http",
 	HandlerType: (*HttpServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Ping",
+			Handler:    _Http_Ping_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "ProcessRequest",

@@ -2,9 +2,11 @@ syntax = "proto3";
 
 option go_package = "github.com/kulycloud/protocol/http;http";
 
+import "common.proto";
 import "storage.proto";
 
 service Http {
+    rpc Ping(Empty) returns (Empty);
     rpc ProcessRequest(stream Chunk) returns (stream Chunk);
 }
 
