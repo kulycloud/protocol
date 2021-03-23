@@ -23,6 +23,9 @@ service Storage {
   // Endpoints
   rpc GetServiceLBEndpoints(NamespacedName) returns (EndpointList);
   rpc SetServiceLBEndpoints(SetServiceLBEndpointsRequest) returns (Empty);
+
+  // Namespaces
+  rpc GetNamespaces(Empty) returns (NamespaceList);
 }
 
 message NamespacedName {
@@ -166,4 +169,12 @@ message Service {
 message SetServiceLBEndpointsRequest {
   NamespacedName serviceName = 1;
   repeated Endpoint endpoints = 2;
+}
+
+// --------------------------------
+// ENDPOINTS
+// --------------------------------
+
+message NamespaceList {
+  repeated string namespaces = 1;
 }
